@@ -74,6 +74,7 @@ public class Main extends Application {
             iGamePlugin.start(gameData, world);
         }
         for (Entity entity : world.getEntities()) {
+            System.out.println("Adding entity polygon for: " + entity.getClass().getSimpleName());
             Polygon polygon = new Polygon(entity.getPolygonCoordinates());
             polygons.put(entity, polygon);
             gameWindow.getChildren().add(polygon);
