@@ -10,10 +10,10 @@ import dk.sdu.mmmi.cbse.common.services.IEntityProcessingService;
 public class AsteroidProcessor implements IEntityProcessingService {
 
     private IAsteroidSplitter asteroidSplitter = new AsteroidSplitterImpl();
-
+    private int asteroidMinCount = 5;
     @Override
     public void process(GameData gameData, World world) {
-
+        SpawnAsteroids(gameData, world);
         for (Entity asteroid : world.getEntities(Asteroid.class)) {
             double changeX = Math.cos(Math.toRadians(asteroid.getRotation()));
             double changeY = Math.sin(Math.toRadians(asteroid.getRotation()));
@@ -39,6 +39,16 @@ public class AsteroidProcessor implements IEntityProcessingService {
 
         }
 
+    }
+
+    public void SpawnAsteroids(GameData gameData, World world){
+        int asteroidCount = world.getEntities(Asteroid.class).size();
+        if(asteroidCount < asteroidMinCount){
+            AsteroidPlugin asteroidPlugin = new AsteroidPlugin();
+            Entity asteroid = asteroidPlugin.createAsteroid(gameData);
+            world.addEntity(asteroid);
+
+        }
     }
 
     /**

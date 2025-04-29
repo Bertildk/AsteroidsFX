@@ -21,7 +21,7 @@ public class EnemyPlugin implements IGamePluginService {
 
     }
     
-    private Entity createEnemy(GameData gameData) {
+    public Entity createEnemy(GameData gameData) {
 
         Entity enemyShip = new Enemy();
         Random rnd = new Random();

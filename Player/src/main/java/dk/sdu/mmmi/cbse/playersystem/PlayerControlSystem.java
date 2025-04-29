@@ -18,7 +18,6 @@ public class PlayerControlSystem implements IEntityProcessingService {
 
     @Override
     public void process(GameData gameData, World world) {
-            
         for (Entity player : world.getEntities(Player.class)) {
             if (gameData.getKeys().isDown(GameKeys.LEFT)) {
                 player.setRotation(player.getRotation() - 1);
@@ -32,10 +31,10 @@ public class PlayerControlSystem implements IEntityProcessingService {
                 player.setX(player.getX() + changeX);
                 player.setY(player.getY() + changeY);
             }
-            if(gameData.getKeys().isDown(GameKeys.SPACE)) {                
-                getBulletSPIs().stream().findFirst().ifPresent(
-                        spi -> {world.addEntity(spi.createBullet(player, gameData));}
-                );
+            if(gameData.getKeys().isDown(GameKeys.SPACE) && isReady(System.currentTimeMillis(), (Player) player)) {
+                    getBulletSPIs().stream().findFirst().ifPresent(
+                            spi -> world.addEntity(spi.createBullet(player, gameData))
+                    );
             }
             
             if (player.getX() < 0) {
@@ -56,6 +55,14 @@ public class PlayerControlSystem implements IEntityProcessingService {
 
                                         
         }
+    }
+
+    private boolean isReady(long currentTime, Player player) {
+        if (currentTime - player.getLastShotTime() > player.getFireRate()) {
+            player.setLastShotTime(currentTime);
+            return true;
+        }
+        return false;
     }
 
     private Collection<? extends BulletSPI> getBulletSPIs() {

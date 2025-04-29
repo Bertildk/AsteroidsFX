@@ -1,5 +1,9 @@
 package dk.sdu.mmmi.cbse.main;
 
+import dk.sdu.mmmi.cbse.asteroid.AsteroidSplitterImpl;
+import dk.sdu.mmmi.cbse.collisionsystem.CollisionDetector;
+import dk.sdu.mmmi.cbse.common.asteroids.Asteroid;
+import dk.sdu.mmmi.cbse.common.asteroids.IAsteroidSplitter;
 import dk.sdu.mmmi.cbse.common.data.Entity;
 import dk.sdu.mmmi.cbse.common.data.GameData;
 import dk.sdu.mmmi.cbse.common.data.GameKeys;
@@ -9,6 +13,7 @@ import dk.sdu.mmmi.cbse.common.services.IGamePluginService;
 import dk.sdu.mmmi.cbse.common.services.IPostEntityProcessingService;
 import java.util.Collection;
 import java.util.Map;
+import java.util.Random;
 import java.util.ServiceLoader;
 import java.util.concurrent.ConcurrentHashMap;
 import static java.util.stream.Collectors.toList;
@@ -34,6 +39,8 @@ public class Main extends Application {
 
     @Override
     public void start(Stage window) throws Exception {
+
+
         Text text = new Text(10, 20, "Destroyed asteroids: 0");
         gameWindow.setPrefSize(gameData.getDisplayWidth(), gameData.getDisplayHeight());
         gameWindow.getChildren().add(text);
@@ -83,6 +90,7 @@ public class Main extends Application {
         window.setScene(scene);
         window.setTitle("ASTEROIDS");
         window.show();
+
     }
 
     private void render() {
@@ -96,6 +104,8 @@ public class Main extends Application {
 
         }.start();
     }
+
+
 
     private void update() {
         for (IEntityProcessingService entityProcessorService : getEntityProcessingServices()) {

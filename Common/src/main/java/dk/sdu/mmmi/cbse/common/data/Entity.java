@@ -12,6 +12,7 @@ public class Entity implements Serializable {
     private double y;
     private double rotation;
     private float radius;
+    private float size;
             
 
     public String getID() {
@@ -59,5 +60,15 @@ public class Entity implements Serializable {
         
     public float getRadius() {
         return this.radius;
+    }
+    public float getSize() {
+        return this.size;
+    }
+    public void setSize(float size) {
+        this.size = size;
+    }
+    @Override
+    public String toString() {
+        return this.getClass().getSimpleName();
     }
 }
