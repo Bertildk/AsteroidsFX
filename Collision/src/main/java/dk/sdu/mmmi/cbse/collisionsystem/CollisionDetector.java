@@ -9,6 +9,7 @@ import dk.sdu.mmmi.cbse.common.data.GameData;
 import dk.sdu.mmmi.cbse.common.data.World;
 import dk.sdu.mmmi.cbse.common.asteroids.Asteroid;
 import dk.sdu.mmmi.cbse.common.bullet.Bullet;
+import dk.sdu.mmmi.cbse.common.services.IScoreService;
 import dk.sdu.mmmi.cbse.playersystem.Player;
 
 import java.util.ServiceLoader;
@@ -16,7 +17,7 @@ import java.util.ServiceLoader;
 
 public class CollisionDetector implements IPostEntityProcessingService {
     ServiceLoader<IAsteroidSplitter> asteroidSplitterServiceLoader = ServiceLoader.load(IAsteroidSplitter.class);
-
+    ServiceLoader<IScoreService> scoreServiceLoader = ServiceLoader.load(IScoreService.class);
     @Override
     public void process(GameData gameData, World world) {
         // two for loops for all entities in the world
@@ -32,12 +33,14 @@ public class CollisionDetector implements IPostEntityProcessingService {
                 if (this.collides(entity1, entity2)) {
                     if(entity1 instanceof Asteroid && entity2 instanceof Bullet){
                         createAsteroidSplit(entity1, world);
+                        incrementScore();
                         world.removeEntity(entity1);
                         world.removeEntity(entity2);
                     } else if (entity1 instanceof Bullet && entity2 instanceof Asteroid){
                         // If the two entities are an asteroid and a bullet, remove both
                         // and create a new asteroid
                         createAsteroidSplit(entity1, world);
+                        incrementScore();
                         world.removeEntity(entity1);
                         world.removeEntity(entity2);
                     }
@@ -76,6 +79,11 @@ public class CollisionDetector implements IPostEntityProcessingService {
             // If the two entities are an asteroid and a bullet, remove both
             // and create a new asteroid
             asteroidSplitter.createSplitAsteroid(e, world);
+        }
+    }
+    public void incrementScore(){
+        for (IScoreService scoreService : scoreServiceLoader) {
+            scoreService.incrementScore();
         }
     }
 

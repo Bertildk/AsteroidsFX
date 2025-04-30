@@ -11,12 +11,16 @@ import dk.sdu.mmmi.cbse.common.data.World;
 import dk.sdu.mmmi.cbse.common.services.IEntityProcessingService;
 import dk.sdu.mmmi.cbse.common.services.IGamePluginService;
 import dk.sdu.mmmi.cbse.common.services.IPostEntityProcessingService;
+
+import java.lang.constant.ModuleDesc;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Random;
 import java.util.ServiceLoader;
 import java.util.concurrent.ConcurrentHashMap;
 import static java.util.stream.Collectors.toList;
+
+import dk.sdu.mmmi.cbse.common.services.IScoreService;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -32,16 +36,19 @@ public class Main extends Application {
     private final World world = new World();
     private final Map<Entity, Polygon> polygons = new ConcurrentHashMap<>();
     private final Pane gameWindow = new Pane();
-
+    private int score;
     public static void main(String[] args) {
         launch(Main.class);
     }
-
+    private Text text;
+    private IScoreService scoreService;
     @Override
     public void start(Stage window) throws Exception {
-
-
-        Text text = new Text(10, 20, "Destroyed asteroids: 0");
+        ServiceLoader <IScoreService> loader = ServiceLoader.load(IScoreService.class);
+        for (IScoreService service : loader) {
+             scoreService = service;
+        }
+        text = new Text(10, 20, "Destroyed asteroids: " + scoreService.getScore());
         gameWindow.setPrefSize(gameData.getDisplayWidth(), gameData.getDisplayHeight());
         gameWindow.getChildren().add(text);
 
@@ -100,6 +107,8 @@ public class Main extends Application {
                 update();
                 draw();
                 gameData.getKeys().update();
+                text.setText("Destroyed asteroids: " + scoreService.getScore());
+
             }
 
         }.start();

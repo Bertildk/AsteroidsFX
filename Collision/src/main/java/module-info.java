@@ -9,5 +9,6 @@ module Collision {
     requires Player;
     requires EnemyShip;
     uses dk.sdu.mmmi.cbse.common.asteroids.IAsteroidSplitter;
+    uses dk.sdu.mmmi.cbse.common.services.IScoreService;
     provides IPostEntityProcessingService with dk.sdu.mmmi.cbse.collisionsystem.CollisionDetector;
 }
