@@ -4,7 +4,7 @@ public class GameData {
 
     private int displayWidth  = 800 ;
     private int displayHeight = 800;
-    private final GameKeys keys = new GameKeys();
+    private GameKeys keys = new GameKeys();
 
 
     public GameKeys getKeys() {
@@ -28,4 +28,7 @@ public class GameData {
     }
 
 
+    public void setKeys(GameKeys keys) {
+        this.keys = keys;
+    }
 }
