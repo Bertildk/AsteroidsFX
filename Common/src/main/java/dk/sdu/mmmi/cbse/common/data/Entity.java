@@ -1,6 +1,7 @@
 package dk.sdu.mmmi.cbse.common.data;
 
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.UUID;
 
 public class Entity implements Serializable {
@@ -13,7 +14,30 @@ public class Entity implements Serializable {
     private double rotation;
     private float radius;
     private float size;
-            
+    private int speed;
+    private final HashMap<String, Object> properties = new HashMap<>();
+    private String name ="Entity";
+
+    public void setName(String name) {
+        this.name = name;
+    }
+    public String getName() {
+        return name;
+    }
+
+    public Object getSPI(String key) {
+        return properties.get(key);
+    }
+    public void setSPI(String key, Object value) {
+        properties.put(key, value);
+    }
+
+    public int getSpeed() {
+        return (int) speed;
+    }
+    public void setSpeed(int speed) {
+        this.speed = speed;
+    }
 
     public String getID() {
         return ID.toString();

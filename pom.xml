@@ -21,6 +21,7 @@
         <module>Collision</module>
         <module>EnemyShip</module>
         <module>ScoreSystem</module>
+        <module>Weapons</module>
     </modules>
     <properties>
         <java>java</java>
@@ -31,6 +32,7 @@
     
     <dependencyManagement>
         <dependencies>
+            
         </dependencies>
     </dependencyManagement>    
     <build>

@@ -10,7 +10,7 @@ import dk.sdu.mmmi.cbse.common.services.IEntityProcessingService;
 import javax.swing.*;
 import java.util.ArrayList;
 
-public class BulletControlSystem implements IEntityProcessingService, BulletSPI {
+public class BulletControlSystem implements IEntityProcessingService {
 
     @Override
     public void process(GameData gameData, World world) {
@@ -18,8 +18,8 @@ public class BulletControlSystem implements IEntityProcessingService, BulletSPI 
         for (Entity bullet : world.getEntities(Bullet.class)) {
             double changeX = Math.cos(Math.toRadians(bullet.getRotation()));
             double changeY = Math.sin(Math.toRadians(bullet.getRotation()));
-            bullet.setX(bullet.getX() + changeX * 3);
-            bullet.setY(bullet.getY() + changeY * 3);
+            bullet.setX(bullet.getX() + changeX * bullet.getSpeed());
+            bullet.setY(bullet.getY() + changeY * bullet.getSpeed());
 
             if (bullet.getX() < 0) {
                 bulletsToRemove.add(bullet);
@@ -42,16 +42,5 @@ public class BulletControlSystem implements IEntityProcessingService, BulletSPI 
         }
     }
 
-    @Override
-    public Entity createBullet(Entity shooter, GameData gameData) {
-        Entity bullet = new Bullet();
-        bullet.setPolygonCoordinates(2, -2, 2, 2, -2, 2, -2, -2);
-        double changeX = Math.cos(Math.toRadians(shooter.getRotation()));
-        double changeY = Math.sin(Math.toRadians(shooter.getRotation()));
-        bullet.setX(shooter.getX() + changeX * 10);
-        bullet.setY(shooter.getY() + changeY * 10);
-        bullet.setRotation(shooter.getRotation());
-        bullet.setRadius(1);
-        return bullet;
-    }
+
 }

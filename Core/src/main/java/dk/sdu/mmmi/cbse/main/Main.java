@@ -24,8 +24,12 @@ import dk.sdu.mmmi.cbse.common.services.IScoreService;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
+import javafx.scene.layout.BackgroundImage;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.scene.shape.Polygon;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -48,7 +52,7 @@ public class Main extends Application {
         for (IScoreService service : loader) {
              scoreService = service;
         }
-        text = new Text(10, 20, "Destroyed asteroids: " + scoreService.getScore());
+        text = new Text(10, 20, "Destroyed asteroids: " + scoreService.getScore() + " Highscore: " + scoreService.getHighScore());
         gameWindow.setPrefSize(gameData.getDisplayWidth(), gameData.getDisplayHeight());
         gameWindow.getChildren().add(text);
 
@@ -93,6 +97,9 @@ public class Main extends Application {
             polygons.put(entity, polygon);
             gameWindow.getChildren().add(polygon);
         }
+        Image backgroundImage = new Image(getClass().getResourceAsStream("/background.png"));
+        BackgroundImage background = new BackgroundImage(backgroundImage, null, null, null, null);
+        gameWindow.setBackground(new javafx.scene.layout.Background(background));
         render();
         window.setScene(scene);
         window.setTitle("ASTEROIDS");
@@ -107,7 +114,7 @@ public class Main extends Application {
                 update();
                 draw();
                 gameData.getKeys().update();
-                text.setText("Destroyed asteroids: " + scoreService.getScore());
+                text.setText("Destroyed asteroids: " + scoreService.getScore() + " Highscore: " + scoreService.getHighScore());
 
             }
 
@@ -144,6 +151,21 @@ public class Main extends Application {
             polygon.setTranslateX(entity.getX());
             polygon.setTranslateY(entity.getY());
             polygon.setRotate(entity.getRotation());
+            if (entity instanceof Asteroid) {
+                polygon.setFill(Color.GRAY);
+            } else if (entity.getClass().getSimpleName().equals("Player")) {
+                polygon.setFill(Color.GREENYELLOW);
+            } else if (entity.getClass().getSimpleName().equals("Enemy")) {
+                polygon.setFill(Color.RED);
+            } else if (entity.getClass().getSimpleName().equals("Bullet")) {
+                polygon.setFill(Color.BEIGE);
+            } else if(entity.getClass().getSimpleName().equals("Weapon")){
+                polygon.setFill(Color.YELLOW);
+            }
+            else {
+                polygon.setFill(Color.GREEN);
+            }
+
         }
 
     }

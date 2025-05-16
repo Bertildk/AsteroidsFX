@@ -5,6 +5,12 @@ import dk.sdu.mmmi.cbse.common.services.IScoreService;
 
 public class ScoreServiceImpl implements IScoreService {
     private final Score score = Score.getInstance();
+
+    public void setNewHighScore() {
+        if(score.getScore() > score.getHighScore()){
+            score.setHighScore(score.getScore());
+        }
+    }
     @Override
     public int getScore() {
         return score.getScore();

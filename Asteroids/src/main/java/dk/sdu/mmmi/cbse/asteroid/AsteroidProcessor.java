@@ -10,7 +10,7 @@ import dk.sdu.mmmi.cbse.common.services.IEntityProcessingService;
 public class AsteroidProcessor implements IEntityProcessingService {
 
     private IAsteroidSplitter asteroidSplitter = new AsteroidSplitterImpl();
-    private int asteroidMinCount = 5;
+    private int asteroidMinCount = 8;
     @Override
     public void process(GameData gameData, World world) {
         SpawnAsteroids(gameData, world);

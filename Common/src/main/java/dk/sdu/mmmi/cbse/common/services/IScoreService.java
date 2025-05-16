@@ -6,5 +6,5 @@ public interface IScoreService {
     void incrementScore();
     void setHighScore(int highScore);
     void setScore(int score);
-
+    void setNewHighScore();
 }

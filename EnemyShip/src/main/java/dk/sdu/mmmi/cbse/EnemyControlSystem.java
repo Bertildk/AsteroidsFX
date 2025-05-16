@@ -6,6 +6,7 @@ import dk.sdu.mmmi.cbse.common.data.Entity;
 import dk.sdu.mmmi.cbse.common.data.GameData;
 import dk.sdu.mmmi.cbse.common.data.World;
 import dk.sdu.mmmi.cbse.common.services.IEntityProcessingService;
+import dk.sdu.mmmi.cbse.weapons.WeaponManager;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -67,13 +68,12 @@ public class EnemyControlSystem implements IEntityProcessingService {
             }
             else inBox = !(enemy.getY() > 450);
 
-            int shootDecider = rnd.nextInt(200) + 1;
+            int shootDecider = rnd.nextInt(400) + 1;
 
             if(shootDecider == 50){
                 for (int i = 0; i < 5; i++) {
-                    getBulletSPIs().stream().findFirst().ifPresent(
-                            spi -> world.addEntity(spi.createBullet(enemy, gameData))
-                    );
+                    BulletSPI bulletSPI = ((Enemy) enemy).getWeaponManager().getCurrentWeapon();
+                    world.addEntity(bulletSPI.createBullet(enemy, gameData));
                 }
             }
 
