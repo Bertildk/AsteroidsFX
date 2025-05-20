@@ -4,7 +4,6 @@ public interface IScoreService {
     int getScore();
     int getHighScore();
     void incrementScore();
-    void setHighScore(int highScore);
+    void setHighScore();
     void setScore(int score);
-    void setNewHighScore();
 }

@@ -24,8 +24,16 @@ public class WeaponPlugin implements IGamePluginService {
     public Entity createWeapon(GameData gamedata) {
         Entity weapon = new Weapon();
         Random rnd = new Random();
-        weapon.setPolygonCoordinates(5,-5,-5,-5,5,5);
-        weapon.setX(rnd.nextInt(gamedata.getDisplayWidth()));
+        weapon.setPolygonCoordinates(
+                0, 6,
+                2, 2,
+                6, 0,
+                2, -2,
+                0, -6,
+                -2, -2,
+                -6, 0,
+                -2, 2
+        );        weapon.setX(rnd.nextInt(gamedata.getDisplayWidth()));
         weapon.setY(rnd.nextInt(gamedata.getDisplayHeight()));
         weapon.setRadius(8);
         weapon.setRotation(0);

@@ -2,7 +2,6 @@ package dk.sdu.mmmi.cbse.collisionsystem;
 
 import WeaponEntity.Weapon;
 import dk.sdu.mmmi.cbse.Enemy;
-import dk.sdu.mmmi.cbse.asteroid.AsteroidProcessor;
 import dk.sdu.mmmi.cbse.common.asteroids.IAsteroidSplitter;
 import dk.sdu.mmmi.cbse.common.bullet.BulletSPI;
 import dk.sdu.mmmi.cbse.common.services.IPostEntityProcessingService;
@@ -20,7 +19,7 @@ import java.util.ServiceLoader;
 
 public class CollisionDetector implements IPostEntityProcessingService {
     ServiceLoader<IAsteroidSplitter> asteroidSplitterServiceLoader = ServiceLoader.load(IAsteroidSplitter.class);
-    ServiceLoader<IScoreService> scoreServiceLoader = ServiceLoader.load(IScoreService.class);
+    ServiceLoader<IScoreService> scoreHandlerServiceLoader = ServiceLoader.load(IScoreService.class);
     @Override
     public void process(GameData gameData, World world) {
         // two for loops for all entities in the world
@@ -78,20 +77,20 @@ public class CollisionDetector implements IPostEntityProcessingService {
                             if(!entity1.getName().equals("explodingBullet")){
                                 world.removeEntity(entity1);
                                 world.removeEntity(entity2);
-                                onDeath();
+                                UpdateHighscore();
                             }
                         } else {
                             bulletCollision(entity2, world);
                             if(!entity2.getName().equals("explodingBullet")){
                                 world.removeEntity(entity1);
                                 world.removeEntity(entity2);
-                                onDeath();
+                                UpdateHighscore();
                             }
                         }
                     }
                     if ((entity1 instanceof Player && entity2 instanceof Asteroid) || entity1 instanceof Asteroid && entity2 instanceof Player) {
                         // Enemies must not collide with each other
-                        onDeath();
+                        UpdateHighscore();
                         world.removeEntity(entity1);
                         world.removeEntity(entity2);
                     }
@@ -115,9 +114,9 @@ public class CollisionDetector implements IPostEntityProcessingService {
         }
 
     }
-    public void onDeath(){
-        for (IScoreService scoreService : scoreServiceLoader) {
-            scoreService.setNewHighScore();
+    public void UpdateHighscore(){
+        for(IScoreService scoreHandler : scoreHandlerServiceLoader){
+            scoreHandler.setHighScore();
         }
     }
     public void bulletCollision(Entity e, World world){
@@ -134,8 +133,8 @@ public class CollisionDetector implements IPostEntityProcessingService {
         }
     }
     public void incrementScore(){
-        for (IScoreService scoreService : scoreServiceLoader) {
-            scoreService.incrementScore();
+        for(IScoreService scoreHandler : scoreHandlerServiceLoader){
+            scoreHandler.incrementScore();
         }
     }
 

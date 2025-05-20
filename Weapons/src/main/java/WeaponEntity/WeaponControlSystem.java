@@ -10,8 +10,8 @@ public class WeaponControlSystem implements IEntityProcessingService {
     @Override
     public void process(GameData gameData, World world) {
         Random rndDecider = new Random();
-        int rng = rndDecider.nextInt(1000);
-        if (rng == 999){
+        int rng = rndDecider.nextInt(10000);
+        if (rng == 9999){
             WeaponPlugin wpnPlugin = new WeaponPlugin();
             world.addEntity(wpnPlugin.createWeapon(gameData));
         }
