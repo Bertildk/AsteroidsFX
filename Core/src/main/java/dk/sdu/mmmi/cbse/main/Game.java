@@ -1,6 +1,5 @@
 package dk.sdu.mmmi.cbse.main;
 
-import dk.sdu.mmmi.cbse.common.asteroids.Asteroid;
 import dk.sdu.mmmi.cbse.common.data.Entity;
 import dk.sdu.mmmi.cbse.common.data.GameData;
 import dk.sdu.mmmi.cbse.common.data.GameKeys;
@@ -25,7 +24,7 @@ import javafx.scene.shape.Polygon;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-public class Game{
+public class Game extends GameData {
 
     private final GameData gameData = new GameData();
     private final World world = new World();
@@ -154,7 +153,7 @@ public class Game{
             polygon.setTranslateX(entity.getX());
             polygon.setTranslateY(entity.getY());
             polygon.setRotate(entity.getRotation());
-            if (entity instanceof Asteroid) {
+            if (entity.getClass().getSimpleName().equals("Asteroid")) {
                 polygon.setFill(Color.GRAY);
             } else if (entity.getClass().getSimpleName().equals("Player")) {
                 polygon.setFill(Color.GREENYELLOW);

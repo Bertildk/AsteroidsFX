@@ -1,6 +1,7 @@
 package WeaponEntity;
 
 import dk.sdu.mmmi.cbse.common.data.Entity;
+import dk.sdu.mmmi.cbse.common.data.EntityType;
 import dk.sdu.mmmi.cbse.common.data.GameData;
 import dk.sdu.mmmi.cbse.common.data.World;
 import dk.sdu.mmmi.cbse.common.services.IGamePluginService;
@@ -24,6 +25,7 @@ public class WeaponPlugin implements IGamePluginService {
     public Entity createWeapon(GameData gamedata) {
         Entity weapon = new Weapon();
         Random rnd = new Random();
+        weapon.setEntityType(EntityType.WEAPON);
         weapon.setPolygonCoordinates(
                 0, 6,
                 2, 2,

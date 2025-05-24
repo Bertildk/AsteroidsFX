@@ -3,6 +3,7 @@ package dk.sdu.mmmi.cbse.weapons;
 import dk.sdu.mmmi.cbse.common.bullet.Bullet;
 import dk.sdu.mmmi.cbse.common.bullet.BulletSPI;
 import dk.sdu.mmmi.cbse.common.data.Entity;
+import dk.sdu.mmmi.cbse.common.data.EntityType;
 import dk.sdu.mmmi.cbse.common.data.GameData;
 import dk.sdu.mmmi.cbse.common.data.World;
 
@@ -10,6 +11,7 @@ public class StandardBulletControlSystem implements BulletSPI {
     @Override
     public Entity createBullet(Entity shooter, GameData gameData) {
         Entity bullet = new Bullet();
+        bullet.setEntityType(EntityType.BULLET);
         bullet.setSPI("SPI", this);
         bullet.setSpeed(3);
         bullet.setPolygonCoordinates(2, -2, 2, 2, -2, 2, -2, -2);

@@ -34,7 +34,7 @@ public class EnemyControlSystem implements IEntityProcessingService {
             if (inBox) {
                 // Apply initial random rotation when inside the box
                 if (rotationSpeed == 0) { // Initialize rotationSpeed only once
-                    rotationSpeed = 2 * rnd.nextDouble();
+                    rotationSpeed = 5 * rnd.nextDouble();
                 }
             } else {
                 // When out of the box, change the rotation direction

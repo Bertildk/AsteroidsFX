@@ -1,6 +1,7 @@
 package dk.sdu.mmmi.cbse.playersystem;
 
 import dk.sdu.mmmi.cbse.common.data.Entity;
+import dk.sdu.mmmi.cbse.common.data.EntityType;
 import dk.sdu.mmmi.cbse.common.data.GameData;
 import dk.sdu.mmmi.cbse.common.data.World;
 import dk.sdu.mmmi.cbse.common.services.IGamePluginService;
@@ -24,6 +25,7 @@ public class PlayerPlugin implements IGamePluginService {
     private Entity createPlayerShip(GameData gameData) {
         WeaponManager weaponManager = new WeaponManager();
         Entity playerShip = new Player(weaponManager);
+        playerShip.setEntityType(EntityType.PLAYER);
         Player player = (Player) playerShip;
         player.getWeaponManager().setCurrentWeapon("bullet");
         playerShip.setPolygonCoordinates(-10,-10,20,0,-10,10);

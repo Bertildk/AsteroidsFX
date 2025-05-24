@@ -19,7 +19,6 @@ public class Main extends Application {
         }));
     }
 
-
     @Override
     public void start(Stage stage) throws Exception {
         microServiceLauncher = MicroServiceLauncher.getInstance();

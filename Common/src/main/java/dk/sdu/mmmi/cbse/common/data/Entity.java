@@ -4,10 +4,10 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.UUID;
 
-public class Entity implements Serializable {
+public class Entity extends World implements Serializable {
 
     private final UUID ID = UUID.randomUUID();
-    
+    private EntityType type;
     private double[] polygonCoordinates;
     private double x;
     private double y;
@@ -18,6 +18,12 @@ public class Entity implements Serializable {
     private final HashMap<String, Object> properties = new HashMap<>();
     private String name ="Entity";
 
+    public void setEntityType(EntityType type) {
+        this.type = type;
+    }
+    public EntityType getEntityType() {
+        return type;
+    }
     public void setName(String name) {
         this.name = name;
     }

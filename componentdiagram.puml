@@ -1,0 +1,42 @@
+@startuml
+skinparam componentStyle rectangle
+
+' Core orchestrates the system and loads modules via ServiceLoader
+component Core
+
+' Common contains shared interfaces and base classes
+component Common
+
+' Game feature modules
+component Asteroids
+component Bullet
+component Collision
+component EnemyShip
+component Player
+component Weapons
+component ScoreSystem
+
+' External API for scoring
+component ScoringAPI
+
+' Dependencies between components
+[Core] --> Asteroids
+Core --> Bullet
+Core --> Collision
+Core --> EnemyShip
+Core --> Player
+Core --> Weapons
+Core --> ScoreSystem
+
+ScoreSystem --> ScoringAPI
+
+' All modules depend on Common for interfaces and base classes
+Asteroids ..> Common
+Bullet ..> Common
+Collision ..> Common
+EnemyShip ..> Common
+Player ..> Common
+Weapons ..> Common
+ScoreSystem ..> Common
+
+@enduml

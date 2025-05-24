@@ -4,6 +4,7 @@ import WeaponEntity.Weapon;
 import dk.sdu.mmmi.cbse.Enemy;
 import dk.sdu.mmmi.cbse.common.asteroids.IAsteroidSplitter;
 import dk.sdu.mmmi.cbse.common.bullet.BulletSPI;
+import dk.sdu.mmmi.cbse.common.data.EntityType;
 import dk.sdu.mmmi.cbse.common.services.IPostEntityProcessingService;
 import dk.sdu.mmmi.cbse.common.data.Entity;
 import dk.sdu.mmmi.cbse.common.data.GameData;
@@ -22,81 +23,90 @@ public class CollisionDetector implements IPostEntityProcessingService {
     ServiceLoader<IScoreService> scoreHandlerServiceLoader = ServiceLoader.load(IScoreService.class);
     @Override
     public void process(GameData gameData, World world) {
-        // two for loops for all entities in the world
         for (Entity entity1 : world.getEntities()) {
             for (Entity entity2 : world.getEntities()) {
-
-                // if the two entities are identical, skip the iteration
                 if (entity1.getID().equals(entity2.getID())) {
-                    continue;                    
+                    continue;
                 }
-
-                // CollisionDetection
                 if (this.collides(entity1, entity2)) {
-                    if(entity1 instanceof Asteroid && entity2 instanceof Bullet){
-                        createAsteroidSplit(entity1, world);
-                        incrementScore();
-                        bulletCollision(entity2, world);
-                        world.removeEntity(entity1);
-                        world.removeEntity(entity2);
-                    } else if (entity1 instanceof Bullet && entity2 instanceof Asteroid){
-                        // If the two entities are an asteroid and a bullet, remove both
-                        // and create a new asteroid
-                        createAsteroidSplit(entity1, world);
-                        bulletCollision(entity1, world);
-                        incrementScore();
-                        world.removeEntity(entity1);
-                        world.removeEntity(entity2);
-                    }
-                    if ((entity1 instanceof Player && entity2 instanceof Enemy) || entity1 instanceof Enemy && entity2 instanceof Player) {
-                        // Player must not collide with enemy
-                        world.removeEntity(entity1);
-                        world.removeEntity(entity2);
-                    }
-                    if ((entity1 instanceof Enemy && entity2 instanceof Bullet) || entity1 instanceof Bullet && entity2 instanceof Enemy) {
-                        if (entity1 instanceof Bullet){
-                            bulletCollision(entity1, world);
+                    EntityType type1 = entity1.getEntityType();
+                    EntityType type2 = entity2.getEntityType();
+
+                    if ((type1 == EntityType.ASTEROID && type2 == EntityType.BULLET) ||
+                            (type1 == EntityType.BULLET && type2 == EntityType.ASTEROID)) {
+
+                        Entity asteroidEntity;
+                        Entity bulletEntity;
+
+                        if (type1 == EntityType.ASTEROID) {
+                            asteroidEntity = entity1;
+                            bulletEntity = entity2;
                         } else {
-                            bulletCollision(entity2, world);
+                            asteroidEntity = entity2;
+                            bulletEntity = entity1;
                         }
 
-                        // Enemies must not collide with each other
-                        world.removeEntity(entity1);
-                        world.removeEntity(entity2);
-                    }
-                    if ((entity1 instanceof Enemy && entity2 instanceof Asteroid) || entity1 instanceof Asteroid && entity2 instanceof Enemy) {
-                        // Enemies must not collide with each other
-                        world.removeEntity(entity1);
-                        world.removeEntity(entity2);
-                    }
-                    if ((entity1 instanceof Player && entity2 instanceof Bullet) || entity1 instanceof Bullet && entity2 instanceof Player) {
-                        // Enemies must not collide with each other
+                        createAsteroidSplit(asteroidEntity, world);
+                        bulletCollision(bulletEntity, world);
+                        incrementScore();
+                        world.removeEntity(asteroidEntity);
+                        world.removeEntity(bulletEntity);
 
-                        if (entity1 instanceof Bullet){
-                            bulletCollision(entity1, world);
-                            if(!entity1.getName().equals("explodingBullet")){
-                                world.removeEntity(entity1);
-                                world.removeEntity(entity2);
-                                UpdateHighscore();
-                            }
+                    } else if ((type1 == EntityType.PLAYER && type2 == EntityType.ENEMY) ||
+                            (type1 == EntityType.ENEMY && type2 == EntityType.PLAYER)) {
+
+                        world.removeEntity(entity1);
+                        world.removeEntity(entity2);
+
+                    } else if ((type1 == EntityType.ENEMY && type2 == EntityType.BULLET) ||
+                            (type1 == EntityType.BULLET && type2 == EntityType.ENEMY)) {
+
+                        Entity bulletEntity;
+                        if (type1 == EntityType.BULLET) {
+                            bulletEntity = entity1;
                         } else {
-                            bulletCollision(entity2, world);
-                            if(!entity2.getName().equals("explodingBullet")){
-                                world.removeEntity(entity1);
-                                world.removeEntity(entity2);
-                                UpdateHighscore();
-                            }
+                            bulletEntity = entity2;
                         }
-                    }
-                    if ((entity1 instanceof Player && entity2 instanceof Asteroid) || entity1 instanceof Asteroid && entity2 instanceof Player) {
-                        // Enemies must not collide with each other
+
+                        bulletCollision(bulletEntity, world);
+                        world.removeEntity(entity1);
+                        world.removeEntity(entity2);
+
+                    } else if ((type1 == EntityType.ENEMY && type2 == EntityType.ASTEROID) ||
+                            (type1 == EntityType.ASTEROID && type2 == EntityType.ENEMY)) {
+
+                        world.removeEntity(entity1);
+                        world.removeEntity(entity2);
+
+                    } else if ((type1 == EntityType.PLAYER && type2 == EntityType.BULLET) ||
+                            (type1 == EntityType.BULLET && type2 == EntityType.PLAYER)) {
+
+                        Entity bulletEntity;
+                        if (type1 == EntityType.BULLET) {
+                            bulletEntity = entity1;
+                        } else {
+                            bulletEntity = entity2;
+                        }
+
+                        bulletCollision(bulletEntity, world);
+
+                        if (!bulletEntity.getName().equals("explodingBullet")) {
+                            world.removeEntity(entity1);
+                            world.removeEntity(entity2);
+                            UpdateHighscore();
+                        }
+
+                    } else if ((type1 == EntityType.PLAYER && type2 == EntityType.ASTEROID) ||
+                            (type1 == EntityType.ASTEROID && type2 == EntityType.PLAYER)) {
+
                         UpdateHighscore();
                         world.removeEntity(entity1);
                         world.removeEntity(entity2);
-                    }
-                    if (entity1 instanceof Player && entity2 instanceof Weapon || entity1 instanceof Weapon && entity2 instanceof Player) {
-                        // Enemies must not collide with each other
-                        if (entity1 instanceof Weapon){
+
+                    } else if ((type1 == EntityType.PLAYER && type2 == EntityType.WEAPON) ||
+                            (type1 == EntityType.WEAPON && type2 == EntityType.PLAYER)) {
+
+                        if (type1 == EntityType.WEAPON) {
                             WeaponManager weaponManager = ((Player) entity2).getWeaponManager();
                             weaponManager.setCurrentWeapon("bazooka");
                             world.removeEntity(entity1);
@@ -105,15 +115,27 @@ public class CollisionDetector implements IPostEntityProcessingService {
                             weaponManager.setCurrentWeapon("bazooka");
                             world.removeEntity(entity2);
                         }
-
-
+                    }
+                    if(!(IsValidEntityType(type1) && IsValidEntityType(type2))) {
+                        // Removing entities if they are not valid types
+                        world.removeEntity(entity1);
+                        world.removeEntity(entity2);
                     }
 
                 }
             }
         }
-
     }
+    private boolean IsValidEntityType(EntityType type) {
+        return type == EntityType.ASTEROID || type == EntityType.BULLET || type == EntityType.ENEMY || type == EntityType.PLAYER || type == EntityType.WEAPON;
+    }
+    public Boolean collides(Entity entity1, Entity entity2) {
+        float dx = (float) entity1.getX() - (float) entity2.getX();
+        float dy = (float) entity1.getY() - (float) entity2.getY();
+        float distance = (float) Math.sqrt(dx * dx + dy * dy);
+        return distance < (entity1.getRadius() + entity2.getRadius());
+    }
+
     public void UpdateHighscore(){
         for(IScoreService scoreHandler : scoreHandlerServiceLoader){
             scoreHandler.setHighScore();
@@ -138,11 +160,6 @@ public class CollisionDetector implements IPostEntityProcessingService {
         }
     }
 
-    public Boolean collides(Entity entity1, Entity entity2) {
-        float dx = (float) entity1.getX() - (float) entity2.getX();
-        float dy = (float) entity1.getY() - (float) entity2.getY();
-        float distance = (float) Math.sqrt(dx * dx + dy * dy);
-        return distance < (entity1.getRadius() + entity2.getRadius());
-    }
+
 
 }

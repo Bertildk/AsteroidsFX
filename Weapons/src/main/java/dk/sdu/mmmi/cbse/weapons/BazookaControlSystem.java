@@ -3,6 +3,7 @@ package dk.sdu.mmmi.cbse.weapons;
 import dk.sdu.mmmi.cbse.common.bullet.Bullet;
 import dk.sdu.mmmi.cbse.common.bullet.BulletSPI;
 import dk.sdu.mmmi.cbse.common.data.Entity;
+import dk.sdu.mmmi.cbse.common.data.EntityType;
 import dk.sdu.mmmi.cbse.common.data.GameData;
 import dk.sdu.mmmi.cbse.common.data.World;
 import dk.sdu.mmmi.cbse.common.services.IEntityProcessingService;
@@ -16,7 +17,7 @@ public class BazookaControlSystem implements BulletSPI {
     public Entity createBullet(Entity shooter, GameData gameData) {
         Entity bazooka = new Bullet();
         bazooka.setSPI("SPI", this);
-        bazooka.setSpeed(1);
+        bazooka.setSpeed(2);
         bazooka.setSize(4);
         bazooka.setPolygonCoordinates(4, -4, 4, 4, -4, 4, -4, -4);
         double changeX = Math.cos(Math.toRadians(shooter.getRotation()));
@@ -40,6 +41,7 @@ public class BazookaControlSystem implements BulletSPI {
         }else{
             for (int i = 0; i < 8; i++) {
                 Entity bullet = new Bullet();
+                bullet.setEntityType(EntityType.BULLET);
                 bullet.setSpeed(2);
                 float size = e.getSize() / 3;
                 bullet.setSize(size);

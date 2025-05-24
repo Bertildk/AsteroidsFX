@@ -21,6 +21,7 @@ public class AsteroidSplitterImpl implements IAsteroidSplitter {
             for (int i = 0; i < 2; i++) {
                 System.out.println("Creating split asteroid with size: " + e.getSize() / 2);
                 Entity asteroid = new Asteroid();
+                asteroid.setEntityType(e.getEntityType());
                 Random rnd = new Random();
                 float size = e.getSize() / 2;
                 asteroid.setSize(size);
