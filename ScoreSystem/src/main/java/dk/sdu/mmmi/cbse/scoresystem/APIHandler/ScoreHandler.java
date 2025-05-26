@@ -50,10 +50,6 @@ public class ScoreHandler implements IScoreService {
                 URL finalURL = new URL(url);
                 HttpURLConnection connection = (HttpURLConnection) finalURL.openConnection();
                 connection.setRequestMethod("GET");
-                connection.setConnectTimeout(2000);
-                connection.setReadTimeout(2000);
-
-
                 int status = connection.getResponseCode();
 
                 if (status == 200) {

@@ -1,14 +1,11 @@
 package dk.sdu.mmmi.cbse;
 
-import dk.sdu.mmmi.cbse.common.bullet.Bullet;
 import dk.sdu.mmmi.cbse.common.bullet.BulletSPI;
 import dk.sdu.mmmi.cbse.common.data.Entity;
 import dk.sdu.mmmi.cbse.common.data.GameData;
 import dk.sdu.mmmi.cbse.common.data.World;
 import dk.sdu.mmmi.cbse.common.services.IEntityProcessingService;
-import dk.sdu.mmmi.cbse.weapons.WeaponManager;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Random;
 import java.util.ServiceLoader;
@@ -38,7 +35,7 @@ public class EnemyControlSystem implements IEntityProcessingService {
                 }
             } else {
                 // When out of the box, change the rotation direction
-                rotationSpeed = 2 * (rnd.nextDouble() - 0.5); // New random rotation direction
+                rotationSpeed = -rotationSpeed; // New random rotation direction
             }
 
             enemy.setRotation(enemy.getRotation() + rotationSpeed);

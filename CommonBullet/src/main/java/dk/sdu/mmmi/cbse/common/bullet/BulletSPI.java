@@ -10,6 +10,5 @@ import dk.sdu.mmmi.cbse.common.data.World;
  */
 public interface BulletSPI {
     Entity createBullet(Entity e, GameData gameData);
-    String getWeaponName();
     void explodeBullet(Entity e, World w);
 }

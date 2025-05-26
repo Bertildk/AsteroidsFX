@@ -3,13 +3,6 @@ import dk.sdu.mmmi.cbse.common.services.IPostEntityProcessingService;
 module Collision {
     exports dk.sdu.mmmi.cbse.collisionsystem;
     requires Common;
-    requires CommonBullet;
-    requires CommonAsteroids;
-    requires Asteroid;
-    requires Player;
-    requires EnemyShip;
-    requires Bazooka;
-    uses dk.sdu.mmmi.cbse.common.asteroids.IAsteroidSplitter;
-    uses dk.sdu.mmmi.cbse.common.services.IScoreService;
+    uses dk.sdu.mmmi.cbse.common.services.ICollisionHandler;
     provides IPostEntityProcessingService with dk.sdu.mmmi.cbse.collisionsystem.CollisionDetector;
 }

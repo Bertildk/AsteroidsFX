@@ -24,10 +24,7 @@ public class StandardBulletControlSystem implements BulletSPI {
         return bullet;
     }
 
-    @Override
-    public String getWeaponName() {
-        return "bullet";
-    }
+
 
     @Override
     public void explodeBullet(Entity e, World w) {
