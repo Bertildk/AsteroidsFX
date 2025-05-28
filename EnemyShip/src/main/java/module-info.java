@@ -5,7 +5,7 @@ module EnemyShip {
     exports dk.sdu.mmmi.cbse;
     requires Common;
     requires CommonBullet;
-    requires Bazooka;
+    requires Weapon;
     uses dk.sdu.mmmi.cbse.common.bullet.BulletSPI;
     uses dk.sdu.mmmi.cbse.common.services.IScoreService;
     provides IGamePluginService with dk.sdu.mmmi.cbse.EnemyPlugin;

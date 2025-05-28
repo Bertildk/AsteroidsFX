@@ -4,6 +4,7 @@ import javafx.stage.Stage;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Import;
 
+
 public class Main extends Application {
     MicroServiceLauncher microServiceLauncher;
     public static void main(String[] args) {
@@ -25,6 +26,7 @@ public class Main extends Application {
         microServiceLauncher.startMicroService();
         Thread.sleep(3000);
         //giving time for the microservice to start
+
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(GameConfig.class);
 
         for (String BeanName : context.getBeanDefinitionNames()) {

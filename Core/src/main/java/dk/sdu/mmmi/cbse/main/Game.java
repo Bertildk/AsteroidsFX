@@ -30,16 +30,16 @@ public class Game extends GameData {
     private final World world = new World();
     private final Map<Entity, Polygon> polygons = new ConcurrentHashMap<>();
     private final Pane gameWindow = new Pane();
-    private int score;
+    private int score, highScore;
 
     private Text text;
 
     List<IGamePluginService> iGamePluginServices;
     List<IEntityProcessingService> iEntityProcessingServices;
     List<IPostEntityProcessingService> iPostEntityProcessingServices;
-    IScoreService scoreService;
+    List<IScoreService> scoreService;
     public Game(List<IGamePluginService> iGamePluginServices, List<IEntityProcessingService> iEntityProcessingServices,
-                List<IPostEntityProcessingService> iPostEntityProcessingServices, IScoreService iScoreService) {
+                List<IPostEntityProcessingService> iPostEntityProcessingServices, List<IScoreService> iScoreService) {
         this.iGamePluginServices = iGamePluginServices;
         this.iEntityProcessingServices = iEntityProcessingServices;
         this.iPostEntityProcessingServices = iPostEntityProcessingServices;
@@ -48,8 +48,12 @@ public class Game extends GameData {
 
 
     public void start(Stage window) throws Exception {
-        int score = scoreService.getScore();
-        text = new Text(10, 20, "Destroyed asteroids: " + score + " Highscore: " + scoreService.getHighScore());
+
+        for (IScoreService scoreService : scoreService) {
+            score = scoreService.getScore();
+            highScore = scoreService.getHighScore();
+        }
+        text = new Text(10, 20, "Destroyed asteroids: " + score + " Highscore: " + highScore);
         gameWindow.setPrefSize(gameData.getDisplayWidth(), gameData.getDisplayHeight());
         gameWindow.getChildren().add(text);
 
@@ -121,7 +125,11 @@ public class Game extends GameData {
     private void updateScore(){
         Random rnd = new Random();
         if(rnd.nextInt(100) < 95){
-            text.setText("Destroyed asteroids: " + scoreService.getScore() + " Highscore: " + scoreService.getHighScore());
+            for (IScoreService scoreService : scoreService) {
+                score = scoreService.getScore();
+                highScore = scoreService.getHighScore();
+            }
+            text.setText("Destroyed asteroids: " + score + " Highscore: " +highScore);
         }
         // Method implememted so that the API isn't called every frame
     }
@@ -132,6 +140,7 @@ public class Game extends GameData {
         for (IPostEntityProcessingService postEntityProcessorService : getPostEntityProcessingServices()) {
             postEntityProcessorService.process(gameData, world);
         }
+
     }
 
     private void draw() {
@@ -171,20 +180,6 @@ public class Game extends GameData {
         }
 
     }
-
-    /*
-    private Collection<? extends IGamePluginService> getPluginServices() {
-        return ServiceLoader.load(IGamePluginService.class).stream().map(ServiceLoader.Provider::get).collect(toList());
-    }
-
-    private Collection<? extends IEntityProcessingService> getEntityProcessingServices() {
-        return ServiceLoader.load(IEntityProcessingService.class).stream().map(ServiceLoader.Provider::get).collect(toList());
-    }
-
-    private Collection<? extends IPostEntityProcessingService> getPostEntityProcessingServices() {
-        return ServiceLoader.load(IPostEntityProcessingService.class).stream().map(ServiceLoader.Provider::get).collect(toList());
-    }
-    */
 
      //Updated to use SPRING DI
     private List<IGamePluginService> getPluginServices() {

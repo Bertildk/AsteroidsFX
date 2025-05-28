@@ -27,6 +27,7 @@ public class ScoreAPI {
         return score.getScore();
     }
     @GetMapping("/highscore")
+
     public int getHighScore() {
         return score.getHighScore();
     }

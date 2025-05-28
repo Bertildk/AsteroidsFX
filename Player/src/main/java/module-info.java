@@ -8,7 +8,8 @@ module Player {
     requires Common;
     requires CommonBullet;
     uses dk.sdu.mmmi.cbse.common.bullet.BulletSPI;
-    requires Bazooka;
+    uses dk.sdu.mmmi.cbse.common.services.IScoreService;
+    requires Weapon;
     provides IGamePluginService with dk.sdu.mmmi.cbse.playersystem.PlayerPlugin;
     provides IEntityProcessingService with dk.sdu.mmmi.cbse.playersystem.PlayerControlSystem;
     provides ICollisionHandler with dk.sdu.mmmi.cbse.playersystem.PlayerCollisionHandler;

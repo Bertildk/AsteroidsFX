@@ -3,8 +3,6 @@ package dk.sdu.mmmi.cbse.scoresystem.APIHandler;
 import dk.sdu.mmmi.cbse.common.services.IScoreService;
 
 import java.io.IOException;
-import java.lang.constant.ModuleDesc;
-import java.net.MalformedURLException;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;

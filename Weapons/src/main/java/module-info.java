@@ -1,6 +1,6 @@
 import WeaponEntity.WeaponCollisionHandler;
 
-module Bazooka {
+module Weapon {
     exports dk.sdu.mmmi.cbse.weapons;
     exports WeaponEntity;
     requires Common;
